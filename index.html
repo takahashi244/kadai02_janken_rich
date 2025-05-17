@@ -8,30 +8,67 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Stick&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Kaisei+Decol:wght@700&family=Kaisei+Opti&family=Klee+One&family=Shippori+Mincho&display=swap"
       rel="stylesheet"
     />
   </head>
   <body>
-    <h1>
-      <span class="title-part">ジョジョの</span>
-      <span class="title-part">奇妙な</span>
-      <span class="title-part">食べ物</span>
-      <span class="title-part">じゃんけん</span>
-    </h1>
+    <h1 class="game-title">ジョジョの奇妙な食べ物じゃんけん</h1>
 
-    <div class="game-container">
+    <!-- 漫画風導入セクション - 縦書き版 (ルビなし) -->
+    <div class="manga-intro">
+      <div class="manga-panel">
+        <!-- セクション1 -->
+        <div class="manga-bubble manga-box-1 hidden">
+          <p class="vertical-text">
+            これは「<strong>呪い</strong>」を解く物語――
+          </p>
+        </div>
+
+        <!-- セクション2 -->
+        <div class="manga-bubble manga-box-2 hidden">
+          <p class="vertical-text">その始まり――</p>
+        </div>
+
+        <!-- セクション3 -->
+        <div class="manga-bubble manga-box-3 hidden">
+          <p class="vertical-text">「<strong>呪い</strong>」とは</p>
+        </div>
+
+        <!-- セクション4 -->
+        <div class="manga-bubble manga-box-4 hidden">
+          <p class="vertical-text">
+            ある人に言わせると自分の知らない遠い先祖の犯した罪から続く「<strong>穢れ</strong>」と説明する
+          </p>
+        </div>
+
+        <!-- セクション5 -->
+        <div class="manga-bubble manga-box-5 hidden">
+          <p class="vertical-text">あるいは――</p>
+        </div>
+
+        <!-- セクション6 -->
+        <div class="manga-bubble manga-box-6 hidden">
+          <p class="vertical-text">
+            坂上田村麻呂が行った蝦夷選抜から続いている「<strong>恨み</strong>」と説明するものもいる
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- game-containerに非表示クラスを追加 -->
+    <div class="game-container hidden-game">
       <div class="game-buttons">
         <button id="pan" class="image-button">
-          <img src="image/select_pan.png" alt="パン" />
+          <img src="image/select_pan2.png" alt="パン" />
           <span class="button-text">パン</span>
         </button>
         <button id="cherry" class="image-button">
-          <img src="image/select_cherry.png" alt="チェリー" />
+          <img src="image/select_cherry2.png" alt="チェリー" />
           <span class="button-text">チェリー</span>
         </button>
         <button id="sugar" class="image-button">
-          <img src="image/select_sugar.png" alt="角砂糖" />
+          <img src="image/select_sugar2.png" alt="角砂糖" />
           <span class="button-text">角砂糖</span>
         </button>
       </div>
@@ -68,8 +105,9 @@
 
     <div class="footer-space"></div>
 
-    <!-- 自分が作成したjsのコードよりも必ず上！！！に貼り付ける -->
+    <!-- スクリプト -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script src="js/manga-intro.js"></script>
     <script src="js/test.js"></script>
   </body>
 </html>

@@ -7,12 +7,20 @@ h2,
 button,
 select,
 textarea {
-    font-family: 'Stick', sans-serif;
+    font-family: 'klee One', 'Stick', 'sans-serif';
 }
+
+.kaisei-decol-regular {
+    font-family: "Kaisei Decol", serif;
+    font-weight: 400;
+    font-style: normal;
+}
+
 
 /* 共通幅の変数 */
 :root {
-    --common-width: 800px;
+    --common-width: 1000px;
+    /* 一般的なウェブサイト幅に変更 */
     --common-border: 1px solid #ddd;
     --common-radius: 5px;
 }
@@ -27,62 +35,261 @@ html {
     font-size: 16px;
     min-height: 100%;
     height: auto;
-    background-image: url('../image/background.jpg');
-    background-size: cover;
-    background-position: center center;
-    background-repeat: no-repeat;
-    background-attachment: fixed;
+    background-color: white;
 }
 
 body {
-    font-family: 'Arial', sans-serif;
-    width: 900px;
+    font-family: 'Stick', 'Arial', sans-serif;
+    width: var(--common-width);
+    /* 共通幅の変数を使用 */
     margin: 0 auto;
     padding: 20px;
     text-align: center;
     min-height: 100vh;
     height: auto;
-    background-color: transparent;
+    background-color: white;
 }
 
-/* タイトルスタイル */
+/* h1の基本スタイル - シンプルに保つ */
 h1 {
-    color: #fff;
-    margin-bottom: 30px;
+    margin: 0;
+    padding: 0;
     font-size: 2rem;
-    text-shadow:
-        2px 2px 0 #000,
-        -2px 2px 0 #000,
-        2px -2px 0 #000,
-        -2px -2px 0 #000,
-        0 2px 0 #000,
-        2px 0 0 #000,
-        0 -2px 0 #000,
-        -2px 0 0 #000;
-    background-color: rgba(0, 0, 0, 0.5);
-    padding: 10px 20px;
-    border-radius: 10px;
-    display: inline-block;
-    letter-spacing: 1px;
     font-weight: bold;
 }
 
-/* 改行ポイントの設定 */
-h1 .title-part {
-    display: inline-block;
-    margin-right: 0px;
+/* ゲームタイトル専用のスタイル - マージン調整 */
+.game-title {
+    position: relative;
+    color: white;
+    font-family: "Kaisei Decol", serif;
+    font-weight: 700;
+    margin-bottom: 50px;
+    /* はみ出した画像のためのスペースを確保 */
+    font-size: 3rem;
+    background-image: url(../image/top-image2.png);
+    background-position: right bottom;
+    background-size: cover;
+    padding: 80px 20px;
+    display: block;
+    letter-spacing: 1px;
+    font-weight: bold;
+    width: 100%;
+    height: inherit;
+    overflow: hidden;
+    /* 追加: はみ出した要素を隠す */
+
+}
+
+/* キャラクター画像を左下に配置 */
+.game-title::before {
+    content: "";
+    position: absolute;
+    bottom: -60px;
+    /* 下部からより多くはみ出させる */
+    left: 10px;
+    width: 120px;
+    /* キャラクター画像のサイズに調整 */
+    height: 120px;
+    /* キャラクター画像のサイズに調整 */
+    background-image: url(../image/top-character2.jpg);
+    /* パスを修正 */
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: left bottom;
+    z-index: 1;
+}
+
+/* 右上にさかさまのキャラクター画像を配置 */
+.game-title::after {
+    content: "";
+    position: absolute;
+    top: -60px;
+    /* 上部から上にはみ出させる */
+    right: 10px;
+    width: 120px;
+    /* キャラクター画像のサイズに調整 */
+    height: 120px;
+    /* キャラクター画像のサイズに調整 */
+    background-image: url(../image/top-character2.jpg);
+    /* 同じ画像または別の画像 */
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: right top;
+    transform: rotate(180deg);
+    /* 画像を上下さかさまにする */
+    z-index: 1;
 }
 
 h2 {
     font-size: 1.6rem;
 }
 
+/* 漫画風導入セクション - 縦書き版 */
+.manga-intro {
+    width: 100%;
+    max-width: var(--common-width);
+    margin: 0 auto 30px;
+    min-height: 480px;
+    position: relative;
+    background-color: #fff;
+    padding: 20px;
+}
+
+.manga-panel {
+    position: relative;
+    width: 100%;
+    height: 450px;
+    display: grid;
+    /* 5列×3行のより細かいグリッドに変更 */
+    grid-template-columns: repeat(5, 1fr);
+    grid-template-rows: 1fr 1fr 1fr;
+    gap: 15px;
+}
+
+/* 共通スタイル */
+.manga-bubble {
+    background: #fff;
+    border: 1.5px solid #0000006c;
+    /* font-family: "Kaisei Decol", serif; */
+    font-size: 1.1rem;
+    position: relative;
+    opacity: 0;
+    transition: opacity 0.8s ease;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+}
+
+/* 縦書きテキスト */
+.vertical-text {
+    writing-mode: vertical-rl;
+    height: 100%;
+    margin: 0;
+    line-height: 1.8;
+    letter-spacing: 0.05em;
+}
+
+/* 右側のボックス - 最初に表示 */
+.manga-box-1 {
+    grid-column: 5;
+    grid-row: 1 / span 3;
+    /* 縦3段を占める */
+    width: 60%;
+    height: 80%;
+    font-size: 1.2rem;
+    align-self: center;
+    justify-self: center;
+}
+
+/* 真ん中少し右のボックス - 2番目に表示 */
+.manga-box-2 {
+    grid-column: 3 / span 3;
+    grid-row: 1;
+    width: 20%;
+    height: 100%;
+    font-size: 0.95rem;
+    align-self: center;
+    justify-self: center;
+}
+
+/* 真ん中少し左のボックス - 3番目に表示 */
+.manga-box-3 {
+    grid-column: 2 / span 1;
+    grid-row: 1;
+    width: 50%;
+    height: 110%;
+    padding-top: 5%;
+    padding-bottom: 5%;
+    font-size: 1.2rem;
+    align-self: center;
+    justify-self: center;
+}
+
+/* 左端のボックス - 4番目に表示 */
+.manga-box-4 {
+    grid-column: 1;
+    grid-row: 1 / span 2;
+    width: 85%;
+    height: 80%;
+    padding-top: 10%;
+    padding-bottom: 10%;
+    font-size: 0.90rem;
+    align-self: center;
+    justify-self: center;
+}
+
+/* 真ん中少し右のボックス - 5番目に表示 */
+.manga-box-5 {
+    grid-column: 3 / span 2;
+    grid-row: 2;
+    width: 30%;
+    height: 85%;
+    font-size: 0.95rem;
+    align-self: center;
+    justify-self: center;
+}
+
+/* 真ん中少し左のボックス - 最後に表示 */
+.manga-box-6 {
+    grid-column: 2 / span 2;
+    grid-row: 2 / span 2;
+    width: 50%;
+    height: 65%;
+    padding-top: 5%;
+    padding-bottom: 5%;
+    font-size: 0.95rem;
+    align-self: center;
+    justify-self: center;
+}
+
+/* 表示・非表示クラス */
+.hidden {
+    opacity: 0;
+}
+
+.visible {
+    opacity: 1;
+}
+
+/* かぎかっこ内の強調表示 */
+.vertical-text strong {
+    font-weight: 900;
+    /* より太く */
+    font-size: 1.1em;
+    /* 少し大きく */
+    color: #000;
+    /* より濃い色に */
+}
+
+/* ゲームコンテナ全体の幅を統一 */
+.game-container {
+    width: 100%;
+    margin: -30px auto 0;
+    /* 上部マージンをネガティブにして隙間を埋める */
+}
+
+/* ゲームコンテナの表示制御 */
+.hidden-game {
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 1.5s ease, visibility 1.5s;
+}
+
+.visible-game {
+    opacity: 1;
+    visibility: visible;
+}
+
 /* 幅を統一するための共通クラス */
 .game-buttons,
 .result-area,
 .player-area,
-.computer-area {
-    width: var(--common-width);
+.computer-area,
+.game-area {
+    width: 100%;
+    /* すべて親要素の幅いっぱいに広げる */
     margin-left: auto;
     margin-right: auto;
     border-radius: var(--common-radius);
@@ -92,11 +299,12 @@ h2 {
 /* ゲームボタンエリアの表示制御 */
 .game-buttons {
     display: flex;
-    justify-content: center;
-    gap: 10px;
+    justify-content: space-evenly; /* 均等配置に変更 */
+    width: 100%;
     margin-bottom: 30px;
     opacity: 1;
     transition: opacity 0.3s ease;
+    padding: 0 20px; /* 両端に少し余白を持たせる */
 }
 
 /* 結果表示時のゲームボタンエリア */
@@ -113,32 +321,31 @@ button {
     padding: 10px 20px;
     font-size: 16px;
     cursor: pointer;
-    background-color: #f0f0f0;
-    border: 1px solid #ccc;
+    border: none;
+    /* 枠線を削除 */
     border-radius: 5px;
     transition: all 0.3s;
-}
-
-button:hover {
-    background-color: #e0e0e0;
-    transform: scale(1.05);
+    background: transparent;
+    /* 背景を透明に */
 }
 
 /* 画像ボタンのスタイル */
 .image-button {
-    width: 200px;
+    width: 30%; /* 幅を割合で指定して柔軟に */
+    max-width: 200px; /* 最大幅を設定 */
     height: 230px;
     display: flex;
     flex-direction: column;
     align-items: center;
     padding: 10px;
     border-radius: 10px;
-    background-color: #f5f5f5;
-    border: 1px solid #ddd;
+    border: none;
     transition: transform 0.3s ease, box-shadow 0.3s ease;
     cursor: pointer;
     position: relative;
-    justify-content: flex-start;
+    justify-content: center;
+    background: transparent;
+    background-color: transparent;
 }
 
 .image-button img {
@@ -152,12 +359,17 @@ button:hover {
 .button-text {
     font-size: 1rem;
     color: #333;
-    font-weight: bold;
     position: absolute;
     bottom: 15px;
     left: 0;
     right: 0;
     text-align: center;
+}
+
+/* 画像ボタンのホバーエフェクト */
+button:hover {
+    background-color: #e0e0e056;
+    transform: scale(1.05);
 }
 
 .image-button:hover {
@@ -174,7 +386,6 @@ button:hover {
     display: flex;
     justify-content: center;
     gap: 20px;
-    width: var(--common-width);
     margin-left: auto;
     margin-right: auto;
     margin-bottom: 30px;
@@ -198,7 +409,8 @@ button:hover {
 .computer-area {
     border: var(--common-border);
     margin-bottom: 20px;
-    width: 380px;
+    width: 48%;
+    /* 親コンテナの約半分の幅に設定 */
     background-color: white;
 }
 
