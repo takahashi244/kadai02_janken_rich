@@ -6,11 +6,23 @@
 // 角砂糖はチェリーに勝つ、パンに負ける
 
 $(document).ready(function () {
-  // ゲームの選択肢とルール
+  // 選択肢の定義を画像パスを含む形に拡張
   const choices = {
-    pan: { display: "パン", beats: "sugar" },
-    cherry: { display: "チェリー", beats: "pan" },
-    sugar: { display: "角砂糖", beats: "cherry" }
+    pan: {
+      display: "パン",
+      image: "image/select_pan2.png",
+      beats: "sugar"
+    },
+    cherry: {
+      display: "チェリー",
+      image: "image/select_cherry2.png",
+      beats: "pan"
+    },
+    sugar: {
+      display: "角砂糖",
+      image: "image/select_sugar2.png",
+      beats: "cherry"
+    }
   };
   
   // 結果画像のパス（選択と結果の組み合わせで9パターン）
@@ -32,6 +44,9 @@ $(document).ready(function () {
     }
   };
   
+  // ゲームの状態管理変数
+  let isFirstPlay = true; // 初回プレイかどうかを判定するフラグ
+  
   // 各ボタンのクリックイベントを設定
   $("#pan, #cherry, #sugar").click(function() {
     const playerChoice = $(this).attr("id");
@@ -39,39 +54,50 @@ $(document).ready(function () {
     playGame(playerChoice);
   });
 
-  // ゲーム実行処理
+  // ゲーム実行処理の修正
   function playGame(playerChoice) {
-    // プレイヤーの選択を表示
-    $("#player-choice").text(choices[playerChoice].display);
-    
-    // コンピュータの選択をランダムに決定
+    // 選択内容を一時保存（まだ表示しない）
     const computerChoice = getComputerChoice();
-    console.log("コンピュータの選択:", computerChoice);
-    $("#computer-choice").text(choices[computerChoice].display);
     
-    // 勝敗を判定
-    const result = determineWinner(playerChoice, computerChoice);
-    console.log("勝敗結果:", result);
+    // manga-intro部分も含めて非表示にする
+    $(".manga-intro").addClass("hide-permanent");
+    $(".game-buttons").addClass("hide");
+    $(".game-rules").addClass("hide");
     
-    // 結果表示とアニメーション
+    // 画面切り替えのための遅延
     setTimeout(function() {
-      console.log("ゲーム画面を非表示にします");
-      // ゲームボタンエリアを非表示に
-      $(".game-buttons").addClass("hide");
+      // ゲームコンテナをタイトル下の位置に移動させる
+      $(".game-container").addClass("game-active-position");
       
-      // ゲームエリアを非表示に
-      $(".game-area").addClass("hide");
+      // この時点で game-area を表示
+      $(".game-area").removeClass("hidden-game-area").addClass("visible-game-area");
       
-      // 少し遅延して結果エリアを表示（フェードイン効果のため）
+      // プレイヤーの選択を画像で表示
       setTimeout(function() {
-        console.log("結果を表示します");
-        // 結果を表示
-        displayResult(result, playerChoice, computerChoice);
+        $("#player-choice-img")
+          .attr("src", choices[playerChoice].image)
+          .attr("alt", choices[playerChoice].display)
+          .addClass("active");
         
-        // 結果エリアを表示
-        $(".result-area").addClass("show");
-      }, 300);
-    }, 800);
+        // コンピュータの選択を少し遅れて表示 - ここの遅延時間を長くする
+        setTimeout(function() {
+          $("#computer-choice-img")
+            .attr("src", choices[computerChoice].image)
+            .attr("alt", choices[computerChoice].display)
+            .addClass("active");
+          
+          // 最後に結果を表示 - 必要に応じてここも調整
+          setTimeout(function() {
+            // 勝敗判定と結果表示
+            const result = determineWinner(playerChoice, computerChoice);
+            displayResult(result, playerChoice, computerChoice);
+            
+            // 結果エリアを表示
+            $(".result-area").addClass("show");
+          }, 800); // 結果表示までの遅延
+        }, 2000); // ここを長くする（例: 2000）- コンピューターの手表示までの遅延
+      }, 400); // プレイヤーの手表示までの遅延
+    }, 600); // 画面切り替えの遅延
   }
   
   // コンピュータの選択をランダムに決定する関数
@@ -109,50 +135,63 @@ $(document).ready(function () {
   function displayResult(result, playerChoice, computerChoice) {
     let resultText = "";
     
+    // 以前のクラスをすべて削除
+    $("#result-text").removeClass("win lose draw");
+    
     switch (result) {
       case "win":
         resultText = `あなたの勝ち！ ${choices[playerChoice].display} は ${choices[computerChoice].display} に勝ちました！`;
-        $("#result-text").css("color", "green");
+        $("#result-text").addClass("win");
         break;
       case "lose":
         resultText = `あなたの負け... ${choices[playerChoice].display} は ${choices[computerChoice].display} に負けました。`;
-        $("#result-text").css("color", "red");
+        $("#result-text").addClass("lose");
         break;
       case "draw":
         resultText = `引き分け！ お互い ${choices[playerChoice].display} を選びました。`;
-        $("#result-text").css("color", "blue");
+        $("#result-text").addClass("draw");
         break;
     }
     
     // 結果テキストを表示
     $("#result-text").text(resultText);
     
-    // プレイヤーの選択と結果に基づいて適切な画像を表示
+    // 結果画像を表示
     const imagePath = resultImages[playerChoice][result];
     $("#result-image").attr("src", imagePath).show();
   }
   
-  // もう一度プレイするボタンのクリック処理
+  // もう一度プレイするボタンの処理も修正
   $(document).on("click", "#play-again", function() {
-    console.log("ゲームをリセットします");
     // 結果エリアを非表示
     $(".result-area").removeClass("show");
     
-    // 少し遅延してゲームボタンエリアとゲームエリアを再表示
+    // game-area も非表示に戻す
+    $(".game-area").removeClass("visible-game-area").addClass("hidden-game-area");
+    
+    // 選択をリセット
     setTimeout(function() {
-      console.log("ゲーム画面を再表示します");
-      // ゲームボタンエリアを再表示
-      $(".game-buttons").removeClass("hide");
+      // 画像を？に戻す
+      $("#player-choice-img")
+        .attr("src", "image/question_mark.png")
+        .attr("alt", "？")
+        .removeClass("active");
       
-      // ゲームエリアを再表示
-      $(".game-area").removeClass("hide");
+      $("#computer-choice-img")
+        .attr("src", "image/question_mark.png")
+        .attr("alt", "？")
+        .removeClass("active");
       
-      // 選択をリセット
-      $("#player-choice").text("？");
-      $("#computer-choice").text("？");
+      // 結果テキストをリセット
+      $("#result-text").text("選択してください");
       
       // 結果画像を非表示
       $("#result-image").hide();
-    }, 300);
+      
+      // ボタンを再表示
+      setTimeout(function() {
+        $(".game-buttons").removeClass("hide");
+      }, 300);
+    }, 400);
   });
 });

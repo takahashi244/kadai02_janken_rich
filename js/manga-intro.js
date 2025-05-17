@@ -49,9 +49,9 @@ $(document).ready(function() {
         const text = onomatopoeia[Math.floor(Math.random() * onomatopoeia.length)];
         const onoElem = $('<div class="onomatopoeia">' + text + '</div>');
         
-        // ランダムな位置にオノマトペを配置
-        const offsetX = -30 + Math.random() * 60;
-        const offsetY = -20 + Math.random() * 40;
+        // 要素の左側に配置（少しのランダム性を残す）
+        const offsetX = -80 - Math.random() * 20; // 左に-80〜-100pxの位置
+        const offsetY = 10 + Math.random() * 20; // 縦位置は少し下にずらす
         
         onoElem.css({
             'left': (target.offset().left + offsetX) + 'px',

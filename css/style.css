@@ -64,7 +64,7 @@ h1 {
     color: white;
     font-family: "Kaisei Decol", serif;
     font-weight: 700;
-    margin-bottom: 50px;
+    /* margin-bottom: 50px; */
     /* はみ出した画像のためのスペースを確保 */
     font-size: 3rem;
     background-image: url(../image/top-image2.png);
@@ -266,8 +266,8 @@ h2 {
 /* ゲームコンテナ全体の幅を統一 */
 .game-container {
     width: 100%;
-    margin: -30px auto 0;
-    /* 上部マージンをネガティブにして隙間を埋める */
+    margin: 0 auto; /* 上部マージンを0に変更 */
+    position: relative;
 }
 
 /* ゲームコンテナの表示制御 */
@@ -319,7 +319,8 @@ h2 {
 .rules-content {
     display: flex;
     flex-direction: column;
-    gap: 5px; /* 10pxから5pxに減少 */
+    gap: 5px;
+    /* 10pxから5pxに減少 */
 }
 
 /* ルール項目のマージンを小さくする */
@@ -329,8 +330,10 @@ h2 {
     text-align: left;
     position: relative;
     padding-left: 10px;
-    line-height: 1.4; /* 1.6から1.4に縮小 */
-    margin: 8px 0; /* 上下に小さいマージンを設定 */
+    line-height: 1.4;
+    /* 1.6から1.4に縮小 */
+    margin: 8px 0;
+    /* 上下に小さいマージンを設定 */
 }
 
 .rule-item strong {
@@ -381,6 +384,7 @@ h2 {
     margin: 0;
     padding: 0;
     visibility: hidden;
+    transition: opacity 0.3s ease, height 0s 0.3s, visibility 0s 0.3s, margin 0s 0.3s, padding 0s 0.3s;
 }
 
 button {
@@ -456,7 +460,7 @@ button:hover {
     gap: 20px;
     margin-left: auto;
     margin-right: auto;
-    margin-bottom: 30px;
+    /* margin-bottom: 30px; */
     padding: 0;
     border: none;
     opacity: 1;
@@ -470,56 +474,130 @@ button:hover {
     overflow: hidden;
     margin: 0;
     padding: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease, height 0s 0.3s, visibility 0s 0.3s, margin 0s 0.3s, padding 0s 0.3s;
 }
 
-/* プレイヤーエリアとコンピュータエリア */
-.player-area,
-.computer-area {
-    border: var(--common-border);
-    margin-bottom: 20px;
-    width: 48%;
-    /* 親コンテナの約半分の幅に設定 */
-    background-color: white;
+/* ゲームエリアの表示制御 */
+.hidden-game-area {
+    opacity: 0;
+    visibility: hidden;
+    height: 0;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    transition: opacity 0.4s ease, visibility 0.4s, height 0s 0.4s, margin 0s 0.4s, padding 0s 0.4s;
+}
+
+.visible-game-area {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    /* margin: 30px auto; */
+    /* padding: 20px; */
+    background-color: rgba(255, 255, 255, 0.5);
+    border-radius: 10px;
+    opacity: 1;
+    visibility: visible;
+    height: auto;
+    transition: opacity 0.5s ease 0.2s, visibility 0.5s 0.2s;
+}
+
+/* プレイヤーとコンピュータのエリアを横並びに */
+.player-area, .computer-area {
+    width: 45%;
+    min-width: 200px;
+    /* padding: 15px; */
+    /* margin-bottom: 15px; */
+    background-color: rgba(255, 255, 255, 0.7);
+    border-radius: 8px;
+    text-align: center;
+}
+
+/* モバイル対応 */
+@media (max-width: 768px) {
+    .player-area, .computer-area {
+        width: 100%;
+    }
+}
+
+/* ゲームボタンエリアとルール説明の非表示効果 */
+.game-buttons.hide,
+.game-rules.hide {
+    opacity: 0;
+    height: 0;
+    overflow: hidden;
+    margin: 0;
+    padding: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease, height 0s 0.3s, visibility 0s 0.3s, margin 0s 0.3s, padding 0s 0.3s;
+}
+
+/* プレイヤーとコンピュータのエリアも初期非表示 */
+.hidden-game-area .player-area,
+.hidden-game-area .computer-area {
+    opacity: 0;
+}
+
+/* ゲームエリア表示時のアニメーション */
+.visible-game-area .player-area,
+.visible-game-area .computer-area {
+    opacity: 1;
+    animation: jojo-zoom-in 0.7s forwards;
+    animation-delay: 0.2s; /* 少し遅らせて表示 */
+}
+
+.visible-game-area .computer-area {
+    animation-delay: 0.5s; /* コンピュータの選択はさらに遅らせる */
 }
 
 /* 結果エリア */
 .result-area {
-    border: var(--common-border);
-    margin-top: 0;
-    margin-bottom: 50px;
-    background-color: white;
+    width: 100%;
+    max-width: var(--common-width);
+    /* margin: 20px auto 50px; */
+    /* padding: 20px; */
+    background: rgba(255, 255, 255, 0.8);
+    border-radius: 10px;
+    text-align: center;
     display: none;
     opacity: 0;
-    transition: opacity 0.5s ease;
+    visibility: hidden;
+    transition: opacity 0.5s ease, visibility 0.5s;
+}
+
+
+/* 結果テキストのスタイル強化 */
+#result-text {
+    font-size: 1.8rem;  /* フォントサイズを大きく */
+    font-weight: bold;  /* 太字に */
+    margin: 15px 0;     /* 上下のマージンを追加 */
+    /* text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2); 少し影をつける */
+    transition: color 0.5s ease; /* 色の変化をアニメーション */
+}
+
+/* 結果別のクラススタイル */
+#result-text.win {
+    color: #1e8900;  /* 濃い緑（勝ち） */
+    font-size: 2rem; /* さらに大きく */
+}
+
+#result-text.lose {
+    color: #d80000;  /* 濃い赤（負け） */
+}
+
+#result-text.draw {
+    color: #060607;  /* 黒（引き分け） */
 }
 
 /* 表示状態の結果エリア */
 .result-area.show {
     display: block;
     opacity: 1;
-}
-
-/* 結果エリアの内容 */
-.choice-display {
-    font-size: 1.6rem;
-    margin: 10px 0;
-    min-height: 40px;
-}
-
-.result-image {
-    max-width: 100%;
-    height: auto;
-    max-height: 300px;
-    margin-top: 20px;
-}
-
-/* 結果テキスト */
-#result-text {
-    font-size: 1.5rem;
-    font-weight: bold;
-    padding: 10px 0;
-    margin: 0 auto;
-    width: 100%;
+    visibility: visible;
+    animation: jojo-zoom-in 0.7s forwards;
+    position: relative; /* 位置を相対指定に変更 */
+    z-index: 10; /* 他の要素より前面に表示 */
 }
 
 /* コンテンツの可読性を高めるための背景色設定 */
@@ -539,7 +617,7 @@ button:hover {
     margin-top: 30px;
     padding: 10px 20px;
     font-size: 1.1rem;
-    background-color: #4CAF50;
+    background-color: #c7a305;
     color: white;
     border: none;
     border-radius: 5px;
@@ -548,7 +626,7 @@ button:hover {
 }
 
 .play-again-btn:hover {
-    background-color: #45a049;
+    background-color: #ffd900fd;
     transform: scale(1.05);
 }
 
@@ -556,26 +634,26 @@ button:hover {
     transform: scale(0.98);
 }
 
+/* ルール説明のアニメーション効果 */
 /* ジョジョ風アニメーション効果 */
 @keyframes jojo-zoom-in {
     0% {
         opacity: 0;
         transform: scale(0.7) skewX(-5deg);
-        text-shadow: 0 0 0 rgba(0, 0, 0, 0);
     }
+
     70% {
         opacity: 1;
         transform: scale(1.08) skewX(3deg);
-        text-shadow: 3px 3px 0 rgba(0, 0, 0, 0.7);
     }
+
     85% {
         transform: scale(0.95) skewX(0deg);
-        text-shadow: 1px 1px 0 rgba(0, 0, 0, 0.5);
     }
+
     100% {
         opacity: 1;
         transform: scale(1) skewX(0deg);
-        text-shadow: 2px 2px 0 rgba(0, 0, 0, 0.3);
     }
 }
 
@@ -584,16 +662,20 @@ button:hover {
         opacity: 0;
         transform: translateY(20px) scale(0.9);
     }
+
     60% {
         opacity: 1;
         transform: translateY(-10px) scale(1.05);
     }
+
     75% {
         transform: translateY(5px) scale(0.98);
     }
+
     90% {
         transform: translateY(-2px) scale(1.01);
     }
+
     100% {
         opacity: 1;
         transform: translateY(0) scale(1);
@@ -604,9 +686,11 @@ button:hover {
     0% {
         color: #000;
     }
+
     50% {
         color: #b61c1c;
     }
+
     100% {
         color: #000;
     }
@@ -658,11 +742,10 @@ button:hover {
     position: absolute;
     font-family: "Stick", sans-serif;
     font-size: 1.4rem;
-    color: #ff0000;
+    color: #af0b0b;
     opacity: 0;
     z-index: 10;
     pointer-events: none;
-    text-shadow: 2px 2px 0 #000;
     transform: rotate(-5deg);
     animation: onomatopoeia-appear 0.8s forwards;
 }
@@ -672,16 +755,116 @@ button:hover {
         opacity: 0;
         transform: scale(0.5) rotate(-10deg);
     }
+
     30% {
         opacity: 1;
         transform: scale(1.2) rotate(5deg);
     }
+
     70% {
         opacity: 1;
         transform: scale(1) rotate(0deg);
     }
+
     100% {
         opacity: 0;
         transform: scale(1.1) rotate(5deg) translateY(-20px);
     }
 }
+
+/* 漫画イントロとルール説明の表示制御 */
+.manga-intro.hide,
+.game-rules.hide {
+    opacity: 0;
+    height: 0;
+    overflow: hidden;
+    margin: 0;
+    padding: 0;
+    visibility: hidden;
+    position: absolute; /* 位置を絶対指定に変更 */
+    left: -9999px; /* 画面外に移動 */
+    transition: opacity 0.5s ease, visibility 0s 0.5s;
+}
+
+/* manga-introの非表示制御 */
+.manga-intro.hide-permanent {
+    display: none;
+    height: 0;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    visibility: hidden;
+}
+
+/* ゲームがアクティブになったときの位置調整 */
+.game-container.game-active-position {
+    margin-top: 30px;
+    position: relative;
+    transition: margin-top 0.5s ease;
+}
+
+/* タイトル下のゲームボタン配置調整（2回目以降用） */
+.hide + .hide + .game-buttons {
+    margin-top: 20px; /* タイトル下の余白 */
+}
+
+/* ゲームボタンの2回目以降の表示位置 */
+.game-container .game-buttons:not(.hide) {
+    margin-top: 30px; /* タイトル下の余白を調整 */
+}
+
+/* 選択表示のスタイル */
+.choice-display {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 15px auto;
+  max-width: 150px;
+  height: 150px;
+}
+
+.choice-image {
+  max-width: 100%;
+  max-height: 100%;
+  transition: all 0.5s ease;
+}
+
+/* 選択画像のアニメーション強化 */
+@keyframes choice-pop {
+  0% {
+    transform: scale(0.7) rotate(-10deg);
+    opacity: 0;
+    filter: blur(5px);
+  }
+  30% {
+    transform: scale(1.1) rotate(5deg);
+    filter: blur(0);
+  }
+  60% {
+    transform: scale(0.95) rotate(-2deg);
+  }
+  100% {
+    transform: scale(1) rotate(0);
+    opacity: 1;
+  }
+}
+
+/* 表示時にシェイク効果を追加 */
+@keyframes choice-shake {
+  0% { transform: translateX(0); }
+  10% { transform: translateX(-5px) rotate(-2deg); }
+  20% { transform: translateX(5px) rotate(2deg); }
+  30% { transform: translateX(-3px) rotate(-1deg); }
+  40% { transform: translateX(3px) rotate(1deg); }
+  50% { transform: translateX(-2px) rotate(-0.5deg); }
+  60% { transform: translateX(2px) rotate(0.5deg); }
+  70% { transform: translateX(-1px); }
+  80% { transform: translateX(1px); }
+  90% { transform: translateX(-0.5px); }
+  100% { transform: translateX(0); }
+}
+
+.choice-image.active {
+  animation: choice-pop 0.8s forwards, choice-shake 0.8s 0.8s;
+}
+

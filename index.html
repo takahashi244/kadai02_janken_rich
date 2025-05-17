@@ -62,11 +62,11 @@
       <div class="game-rules">
         <h2 class="rules-title hidden-rule">ルール説明‼</h2>
         <div class="rules-content">
-          <p class="rule-item hidden-rule">――1．この「<strong>呪い</strong>」を解く方法はただ1つ</p>
-          <p class="rule-item hidden-rule">――1．食べ物じゃんけんで勝つことである</p>
-          <p class="rule-item hidden-rule">――1．あなた（岸部露伴）はじゃんけん小僧の選ぶ食べ物を予測してかつ必要がある</p>
-          <p class="rule-item hidden-rule">――1．ただし、どの食べ物がどの食べ物に勝つかは道である</p>
-          <p class="rule-item hidden-rule">――1．もしも負けた場合、自分のスタンド能力は相手のものとなる</p>
+          <p class="rule-item hidden-rule">――1. この「<strong>呪い</strong>」を解く方法はただ1つ</p>
+          <p class="rule-item hidden-rule">――1. 食べ物じゃんけんで勝つことである</p>
+          <p class="rule-item hidden-rule">――1. あなた（岸部露伴）はじゃんけん小僧の選ぶ食べ物を予測してかつ必要がある</p>
+          <p class="rule-item hidden-rule">――1. ただし、どの食べ物がどの食べ物に勝つかは道である</p>
+          <p class="rule-item hidden-rule">――1. もしも負けた場合、自分のスタンド能力は相手のものとなる</p>
         </div>
       </div>
 
@@ -85,14 +85,19 @@
         </button>
       </div>
 
-      <div class="game-area">
+      <!-- game-areaをクラスで制御するように変更 -->
+      <div class="game-area hidden-game-area">
         <div class="player-area">
           <h2>露伴(あなた)の選択</h2>
-          <div id="player-choice" class="choice-display">？</div>
+          <div id="player-choice" class="choice-display">
+            <img src="image/question_mark.png" alt="？" class="choice-image" id="player-choice-img">
+          </div>
         </div>
         <div class="computer-area">
           <h2>じゃんけん小僧の選択</h2>
-          <div id="computer-choice" class="choice-display">？</div>
+          <div id="computer-choice" class="choice-display">
+            <img src="image/question_mark.png" alt="？" class="choice-image" id="computer-choice-img">
+          </div>
         </div>
       </div>
 
