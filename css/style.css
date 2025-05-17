@@ -22,7 +22,7 @@ textarea {
     --common-width: 1000px;
     /* 一般的なウェブサイト幅に変更 */
     --common-border: 1px solid #ddd;
-    --common-radius: 5px;
+    /* --common-radius: 5px; */
 }
 
 /* 基本設定 */
@@ -296,15 +296,81 @@ h2 {
     padding: 15px;
 }
 
+/* ルール説明セクション */
+.game-rules {
+    width: 100%;
+    margin: 0 auto 30px;
+    padding: 20px;
+    background: rgba(255, 255, 255, 0.7);
+    border-radius: 10px;
+    position: relative;
+}
+
+.rules-title {
+    /* font-family: "Kaisei Decol", serif; */
+    font-size: 1.8rem;
+    margin-bottom: 15px;
+    color: #000;
+    font-weight: bold;
+    text-align: left;
+}
+
+/* ルールコンテンツのギャップを小さくする */
+.rules-content {
+    display: flex;
+    flex-direction: column;
+    gap: 5px; /* 10pxから5pxに減少 */
+}
+
+/* ルール項目のマージンを小さくする */
+.rule-item {
+    /* font-family: "Shippori Mincho", serif; */
+    font-size: 1.1rem;
+    text-align: left;
+    position: relative;
+    padding-left: 10px;
+    line-height: 1.4; /* 1.6から1.4に縮小 */
+    margin: 8px 0; /* 上下に小さいマージンを設定 */
+}
+
+.rule-item strong {
+    font-weight: 900;
+    font-size: 1.1em;
+    color: #000;
+}
+
+/* ルール説明とボタンの段階的表示制御 */
+.hidden-rule {
+    opacity: 0;
+    transition: opacity 0.8s ease;
+}
+
+.visible-rule {
+    opacity: 1;
+}
+
+.hidden-buttons {
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 1s ease, visibility 1s;
+}
+
+.visible-buttons {
+    opacity: 1;
+    visibility: visible;
+}
+
 /* ゲームボタンエリアの表示制御 */
 .game-buttons {
     display: flex;
-    justify-content: space-evenly; /* 均等配置に変更 */
+    justify-content: space-evenly;
+    /* 均等配置に変更 */
     width: 100%;
     margin-bottom: 30px;
     opacity: 1;
     transition: opacity 0.3s ease;
-    padding: 0 20px; /* 両端に少し余白を持たせる */
+    padding: 0 20px;
+    /* 両端に少し余白を持たせる */
 }
 
 /* 結果表示時のゲームボタンエリア */
@@ -331,8 +397,10 @@ button {
 
 /* 画像ボタンのスタイル */
 .image-button {
-    width: 30%; /* 幅を割合で指定して柔軟に */
-    max-width: 200px; /* 最大幅を設定 */
+    width: 30%;
+    /* 幅を割合で指定して柔軟に */
+    max-width: 200px;
+    /* 最大幅を設定 */
     height: 230px;
     display: flex;
     flex-direction: column;
@@ -486,4 +554,134 @@ button:hover {
 
 .play-again-btn:active {
     transform: scale(0.98);
+}
+
+/* ジョジョ風アニメーション効果 */
+@keyframes jojo-zoom-in {
+    0% {
+        opacity: 0;
+        transform: scale(0.7) skewX(-5deg);
+        text-shadow: 0 0 0 rgba(0, 0, 0, 0);
+    }
+    70% {
+        opacity: 1;
+        transform: scale(1.08) skewX(3deg);
+        text-shadow: 3px 3px 0 rgba(0, 0, 0, 0.7);
+    }
+    85% {
+        transform: scale(0.95) skewX(0deg);
+        text-shadow: 1px 1px 0 rgba(0, 0, 0, 0.5);
+    }
+    100% {
+        opacity: 1;
+        transform: scale(1) skewX(0deg);
+        text-shadow: 2px 2px 0 rgba(0, 0, 0, 0.3);
+    }
+}
+
+@keyframes jojo-button-appear {
+    0% {
+        opacity: 0;
+        transform: translateY(20px) scale(0.9);
+    }
+    60% {
+        opacity: 1;
+        transform: translateY(-10px) scale(1.05);
+    }
+    75% {
+        transform: translateY(5px) scale(0.98);
+    }
+    90% {
+        transform: translateY(-2px) scale(1.01);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+@keyframes jojo-highlight {
+    0% {
+        color: #000;
+    }
+    50% {
+        color: #b61c1c;
+    }
+    100% {
+        color: #000;
+    }
+}
+
+/* タイトルのジョジョ風表示 */
+.rules-title.visible-rule {
+    animation: jojo-zoom-in 0.7s forwards, jojo-highlight 2s 0.7s;
+    transform-origin: left center;
+}
+
+/* ルール項目のジョジョ風表示 */
+.rule-item.visible-rule {
+    animation: jojo-zoom-in 0.6s forwards;
+    transform-origin: left center;
+}
+
+/* 強調表示の強化 */
+.rule-item.visible-rule strong {
+    animation: jojo-highlight 1.5s 0.3s;
+    display: inline-block;
+}
+
+/* ボタンエリアのジョジョ風表示 */
+.game-buttons.visible-buttons {
+    animation: jojo-button-appear 1s forwards;
+}
+
+/* 各ボタンの個別アニメーション */
+.visible-buttons .image-button {
+    opacity: 0;
+    animation: jojo-zoom-in 0.5s forwards;
+}
+
+.visible-buttons #pan {
+    animation-delay: 0.1s;
+}
+
+.visible-buttons #cherry {
+    animation-delay: 0.3s;
+}
+
+.visible-buttons #sugar {
+    animation-delay: 0.5s;
+}
+
+/* オノマトペ効果 */
+.onomatopoeia {
+    position: absolute;
+    font-family: "Stick", sans-serif;
+    font-size: 1.4rem;
+    color: #ff0000;
+    opacity: 0;
+    z-index: 10;
+    pointer-events: none;
+    text-shadow: 2px 2px 0 #000;
+    transform: rotate(-5deg);
+    animation: onomatopoeia-appear 0.8s forwards;
+}
+
+@keyframes onomatopoeia-appear {
+    0% {
+        opacity: 0;
+        transform: scale(0.5) rotate(-10deg);
+    }
+    30% {
+        opacity: 1;
+        transform: scale(1.2) rotate(5deg);
+    }
+    70% {
+        opacity: 1;
+        transform: scale(1) rotate(0deg);
+    }
+    100% {
+        opacity: 0;
+        transform: scale(1.1) rotate(5deg) translateY(-20px);
+    }
 }

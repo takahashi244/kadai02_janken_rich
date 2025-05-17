@@ -9,6 +9,14 @@ $(document).ready(function() {
         $('.manga-box-6')
     ];
     
+    // ルール説明の要素を取得
+    const rulesTitle = $('.rules-title');
+    const ruleItems = $('.rule-item');
+    const gameButtons = $('.game-buttons');
+    
+    // JoJoオノマトペリスト
+    const onomatopoeia = ['ゴゴゴ...', 'ドドド...', 'バァーン!', 'ズキュウウン!', 'ドォーン!'];
+    
     // アンバランスな間隔で表示するアニメーション
     function animateSequentially() {
         // 各ボックスを不規則な間隔で表示
@@ -20,9 +28,9 @@ $(document).ready(function() {
             setTimeout(function() {
                 box.removeClass('hidden').addClass('visible');
                 
-                // 最後のボックスが表示された後、追加の遅延を入れてゲームコンテナを表示
+                // 最後のボックスが表示された後、ゲームコンテナを表示
                 if (index === boxes.length - 1) {
-                    setTimeout(showGameContainer, 3000); // 最後の吹き出しから3秒後に表示
+                    setTimeout(showGameContainer, 2000); // 最後の吹き出しから2秒後に表示
                 }
             }, totalDelay);
         });
@@ -31,6 +39,56 @@ $(document).ready(function() {
     // ゲームコンテナを表示する関数
     function showGameContainer() {
         $('.game-container').addClass('visible-game').removeClass('hidden-game');
+        
+        // ゲームコンテナ表示後、ルール説明のタイトルを表示
+        setTimeout(showRules, 800);
+    }
+    
+    // オノマトペを表示する関数
+    function showOnomatopoeia(target) {
+        const text = onomatopoeia[Math.floor(Math.random() * onomatopoeia.length)];
+        const onoElem = $('<div class="onomatopoeia">' + text + '</div>');
+        
+        // ランダムな位置にオノマトペを配置
+        const offsetX = -30 + Math.random() * 60;
+        const offsetY = -20 + Math.random() * 40;
+        
+        onoElem.css({
+            'left': (target.offset().left + offsetX) + 'px',
+            'top': (target.offset().top + offsetY) + 'px'
+        });
+        
+        $('body').append(onoElem);
+        
+        // アニメーション終了後に要素を削除
+        setTimeout(() => {
+            onoElem.remove();
+        }, 800);
+    }
+    
+    // ルール説明を順番に表示する関数
+    function showRules() {
+        // まずタイトルを表示し、オノマトペを追加
+        rulesTitle.addClass('visible-rule').removeClass('hidden-rule');
+        showOnomatopoeia(rulesTitle);
+        
+        // 各ルール項目を1つずつ表示（1.2秒間隔）- よりジョジョ風に
+        ruleItems.each(function(index) {
+            const item = $(this);
+            setTimeout(() => {
+                item.addClass('visible-rule').removeClass('hidden-rule');
+                showOnomatopoeia(item);
+                
+                // 最後のルール項目が表示された後、ボタンを表示
+                if (index === ruleItems.length - 1) {
+                    setTimeout(() => {
+                        gameButtons.addClass('visible-buttons').removeClass('hidden-buttons');
+                        // ボタンエリアにもオノマトペを追加
+                        showOnomatopoeia(gameButtons);
+                    }, 1200);
+                }
+            }, 1500 * (index + 1)); // 少し長めの間隔（ジョジョ的な間）
+        });
     }
     
     // ページ読み込み時にアニメーション開始
