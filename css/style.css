@@ -1,0 +1,539 @@
+/* 食べ物じゃんけんのスタイル */
+/* フォント */
+body,
+div,
+h1,
+h2,
+button,
+select,
+textarea {
+    font-family: 'Stick', sans-serif;
+}
+
+/* 共通幅の変数 */
+:root {
+    --common-width: 90%;
+    --common-max-width: 800px;
+    --common-border: 1px solid #ddd;
+    --common-radius: 5px;
+}
+
+/* 基本設定 - レスポンシブ対応 */
+* {
+    box-sizing: border-box;
+}
+
+/* 背景画像の設定 - スクロール対応版 */
+html {
+    font-size: 16px;
+    min-height: 100%;
+    /* 高さを100%から最小高さに変更 */
+    height: auto;
+    /* 高さを自動調整に */
+    background-image: url('../image/background.jpg');
+    background-size: cover;
+    background-position: center center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+}
+
+/* iOSの固定背景問題対策 */
+@supports (-webkit-touch-callout: none) {
+    html {
+        background-attachment: scroll;
+        /* iOSデバイスではfixedが動作しないため */
+    }
+}
+
+/* モバイル向け背景調整 */
+@media (max-width: 768px) {
+    html {
+        /* 背景をやや拡大して重要な部分を見えやすく */
+        background-size: 150% auto;
+        background-position: center top;
+        /* 上部を優先表示 */
+    }
+}
+
+@media (max-width: 480px) {
+    html {
+        /* アートディレクション - モバイル向けの背景に切り替え（必要に応じて） */
+        background-image: url('../image/background_mobile.jpg');
+        background-size: cover;
+        background-position: center center;
+    }
+
+    /* 代替方法：既存画像を調整 */
+    html.no-mobile-bg {
+        background-image: url('../image/background.jpg');
+        background-size: 180% auto;
+        /* さらに拡大 */
+        background-position: center 20%;
+        /* 上寄りの位置に */
+    }
+}
+
+body {
+    font-family: 'Arial', sans-serif;
+    width: 95%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 2vw 2vw 4vw 2vw;
+    /* 下部のパディングを増やす */
+    text-align: center;
+    min-height: 100vh;
+    /* 最小高さをビューポート高さに */
+    height: auto;
+    /* 高さを自動調整に */
+    background-color: transparent;
+}
+
+/* タイトルの視認性向上 */
+h1 {
+    color: #fff;
+    /* 白色テキスト */
+    margin-bottom: 3vh;
+    font-size: clamp(1.5rem, 4vw, 2.5rem);
+    text-shadow:
+        2px 2px 0 #000,
+        -2px 2px 0 #000,
+        2px -2px 0 #000,
+        -2px -2px 0 #000,
+        0 2px 0 #000,
+        2px 0 0 #000,
+        0 -2px 0 #000,
+        -2px 0 0 #000;
+    /* 全方向に黒い縁取り */
+    background-color: rgba(0, 0, 0, 0.5);
+    /* 半透明の黒背景 */
+    padding: 10px 20px;
+    border-radius: 10px;
+    display: inline-block;
+    /* 幅をコンテンツに合わせる */
+    letter-spacing: 1px;
+    /* 文字間隔を少し広げる */
+    font-weight: bold;
+}
+
+/* 改行ポイントの設定 */
+h1 .title-part {
+    display: inline-block; /* 改行の機会を作る */
+    margin-right: 0px; /* 単語間のスペース */
+}
+
+h2 {
+    font-size: clamp(1.2rem, 3vw, 2rem);
+}
+
+/* 幅を統一するための共通クラス */
+.game-buttons,
+.result-area,
+.player-area,
+.computer-area {
+    width: var(--common-width);
+    max-width: var(--common-max-width);
+    margin-left: auto;
+    margin-right: auto;
+    border-radius: var(--common-radius);
+    padding: 2%;
+}
+
+/* ゲームボタンエリアの表示制御 */
+.game-buttons {
+    display: flex;
+    justify-content: center;
+    flex-wrap: nowrap;
+    gap: 1%;
+    margin-bottom: 4vh;
+    overflow-x: auto;
+    opacity: 1;
+    /* 初期表示用 */
+    transition: opacity 0.3s ease;
+    /* フェードアウト効果 */
+}
+
+/* 結果表示時のゲームボタンエリア */
+.game-buttons.hide {
+    opacity: 0;
+    height: 0;
+    overflow: hidden;
+    margin: 0;
+    padding: 0;
+    visibility: hidden;
+    /* 完全に非表示に */
+}
+
+button {
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+    background-color: #f0f0f0;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    transition: all 0.3s;
+}
+
+button:hover {
+    background-color: #e0e0e0;
+    transform: scale(1.05);
+}
+
+/* 画像ボタンのレスポンシブスタイル - 幅調整 */
+.image-button {
+    width: 32%;
+    /* 3つで約96%になるよう調整 */
+    min-width: 100px;
+    /* 最小幅を小さく */
+    max-width: 250px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 1%;
+    /* パディングを小さく */
+    border-radius: 10px;
+    background-color: #f5f5f5;
+    border: 1px solid #ddd;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    cursor: pointer;
+    /* 高さを固定して位置を調整 */
+    height: 230px;
+    /* ボタン全体の高さを固定 */
+    position: relative;
+    /* 位置指定の基準点 */
+    justify-content: flex-start;
+    /* 上からコンテンツを配置 */
+}
+
+.image-button img {
+    width: 100%;
+    /* 親要素に対して100%に */
+    height: auto;
+    /* アスペクト比を維持 */
+    object-fit: contain;
+    /* 画像全体が表示されるように */
+    border-radius: 5px;
+    max-height: 170px;
+    /* 画像の最大高さを制限 */
+}
+
+.button-text {
+    font-size: clamp(0.8rem, 2vw, 1.2rem);
+    color: #333;
+    font-weight: bold;
+    /* テキストを下部に固定 */
+    position: absolute;
+    bottom: 15px;
+    /* 下からの距離 */
+    left: 0;
+    right: 0;
+    text-align: center;
+}
+
+.image-button:hover {
+    transform: scale(1.05);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.image-button:active {
+    transform: scale(0.95);
+}
+
+/* ゲームエリアとプレイヤー/コンピューターエリアの表示制御 */
+.game-area {
+    display: flex;
+    flex-wrap: nowrap;
+    justify-content: center;
+    gap: 2%;
+    width: var(--common-width);
+    max-width: var(--common-max-width);
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 3vh;
+    padding: 0;
+    border: none;
+    overflow-x: auto;
+    opacity: 1;
+    /* 初期表示用 */
+    transition: opacity 0.3s ease;
+    /* フェードアウト効果 */
+}
+
+/* 結果表示時のゲームエリア */
+.game-area.hide {
+    opacity: 0;
+    height: 0;
+    overflow: hidden;
+    margin: 0;
+    padding: 0;
+}
+
+/* プレイヤーエリアとコンピュータエリア - 常に横並び */
+.player-area,
+.computer-area {
+    border: var(--common-border);
+    margin-bottom: 2vh;
+    width: 48%;
+    /* 2つで96%になるよう調整 */
+    min-width: 200px;
+    /* 最小幅を設定 */
+    max-width: 400px;
+    /* 最大幅を制限 */
+    flex-shrink: 0;
+    /* 幅を縮小しないように */
+    background-color: white;
+}
+
+/* 結果エリア - 最初は非表示だが、同じ位置に表示されるように */
+.result-area {
+    border: var(--common-border);
+    margin-top: 0;
+    /* game-areaと位置を揃える */
+    margin-bottom: 8vh;
+    width: var(--common-width);
+    max-width: var(--common-max-width);
+    margin-left: auto;
+    margin-right: auto;
+    background-color: white;
+    display: none;
+    /* 最初は非表示 */
+    opacity: 0;
+    /* フェードイン効果用 */
+    transition: opacity 0.5s ease;
+    /* アニメーション効果 */
+}
+
+/* 表示状態の結果エリア */
+.result-area.show {
+    display: block;
+    opacity: 1;
+}
+
+/* 結果エリアの内容 */
+.choice-display {
+    font-size: clamp(1.2rem, 3vw, 2rem);
+    margin: 1vh 0;
+    min-height: 5vh;
+}
+
+.result-image {
+    max-width: 100%;
+    height: auto;
+    max-height: 40vh;
+    /* ビューポートの高さの40%まで */
+    margin-top: 2vh;
+}
+
+/* 結果テキスト - レスポンシブ対応と折り返し防止 */
+#result-text {
+    font-size: clamp(1rem, 3vw, 1.8rem);
+    font-weight: bold;
+    white-space: nowrap;
+    /* テキストを折り返さない */
+    overflow-x: auto;
+    /* 必要に応じて横スクロール */
+    padding: 0.5em 0;
+    /* スクロールバーの表示領域を確保 */
+    margin: 0 auto;
+    width: 100%;
+}
+
+/* コンテンツの可読性を高めるための背景色設定 */
+.game-container {
+    border-radius: 10px;
+}
+
+/* フッターのクリアランス用 */
+.footer-space {
+    height: 5vh;
+    /* スクロール用の余白 */
+    width: 100%;
+    clear: both;
+}
+
+/* もう一度プレイするボタン */
+.play-again-btn {
+    margin-top: 3vh;
+    padding: 10px 20px;
+    font-size: 1.1rem;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.2s;
+}
+
+.play-again-btn:hover {
+    background-color: #45a049;
+    transform: scale(1.05);
+}
+
+.play-again-btn:active {
+    transform: scale(0.98);
+}
+
+/* レスポンシブ対応の追加設定 */
+@media (max-width: 768px) {
+    :root {
+        --common-width: 95%;
+    }
+
+    .game-buttons {
+        justify-content: space-between;
+        /* 均等に配置 */
+    }
+
+    .image-button {
+        width: 32%;
+        /* 横並びを維持 */
+        min-width: unset;
+        /* 最小幅の制約を解除 */
+        margin-bottom: 2vh;
+        height: 200px;
+        /* モバイルでは少し小さく */
+    }
+
+    /* game-areaは横並びを維持するため、flex-directionは変更しない */
+    .game-area {
+        justify-content: center;
+    }
+
+    .player-area,
+    .computer-area {
+        /* モバイルでも横並びを維持 */
+        width: 48%;
+        min-width: 150px;
+        /* モバイルでは少し小さく */
+    }
+
+    /* タイトルの調整 */
+    h1 {
+        font-size: clamp(1.3rem, 5vw, 2rem);
+        width: 90%;
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    /* ゲームボタンエリアのスクロールバーを非表示に */
+    .game-buttons::-webkit-scrollbar {
+        display: none;
+    }
+
+    .game-buttons {
+        -ms-overflow-style: none;
+        scrollbar-width: none;
+        padding-bottom: 10px;
+        /* スクロールしやすいように余白追加 */
+        overflow-x: scroll;
+        /* スクロール可能に */
+        -webkit-overflow-scrolling: touch;
+        /* スムーズスクロール（iOS向け） */
+    }
+
+    /* ゲームエリアのスクロールバーも非表示に */
+    .game-area::-webkit-scrollbar {
+        display: none;
+    }
+
+    .game-area {
+        -ms-overflow-style: none;
+        scrollbar-width: none;
+        padding-bottom: 10px;
+        overflow-x: scroll;
+        -webkit-overflow-scrolling: touch;
+    }
+
+    /* 結果テキストの調整 */
+    #result-text {
+        font-size: clamp(0.9rem, 4vw, 1.5rem);
+    }
+}
+
+@media (max-width: 480px) {
+    :root {
+        --common-width: 98%;
+    }
+
+    body {
+        padding: 1vw;
+    }
+
+    .image-button {
+        width: 32%;
+        /* 横並びを維持 */
+        min-width: unset;
+    }
+
+    .player-area,
+    .computer-area {
+        min-width: 140px;
+        /* さらに小さく */
+        padding: 3%;
+    }
+
+    /* ボタンの調整 - 3つ並びでも使いやすいサイズに */
+    .image-button {
+        height: 180px;
+        /* さらに小さく */
+        padding: 5px;
+    }
+
+    .image-button img {
+        max-height: 120px;
+    }
+
+    .button-text {
+        bottom: 10px;
+    }
+
+    /* プレイヤーエリアとコンピュータエリアの視認性向上 */
+    .player-area,
+    .computer-area {
+        background-color: rgba(255, 255, 255, 0.5);
+        /* スマホでは軽い背景色を追加 */
+    }
+
+    /* 結果エリアも同様に */
+    .result-area {
+        background-color: rgba(255, 255, 255, 0.5);
+    }
+
+    /* タッチ操作の最適化 */
+    button,
+    .image-button {
+        cursor: pointer;
+        -webkit-tap-highlight-color: transparent;
+        /* タップ時のハイライトを消す */
+    }
+
+    /* 画像の表示調整 */
+    .result-image {
+        max-height: 30vh;
+        /* スマホではさらに小さく */
+    }
+}
+
+/* 超小型デバイス向け追加設定 */
+@media (max-width: 360px) {
+
+    /* さらに小さいスマホ向け */
+    h1 {
+        font-size: clamp(1.1rem, 4.5vw, 1.8rem);
+        padding: 8px 12px;
+    }
+
+    .image-button {
+        width: 32%;
+        height: 160px;
+        /* さらに小さく */
+        min-width: 80px;
+    }
+
+    .image-button img {
+        max-height: 100px;
+    }
+
+    h2 {
+        font-size: clamp(1rem, 2.8vw, 1.6rem);
+    }
+}

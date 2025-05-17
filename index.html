@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ジョジョの奇妙な食べ物じゃんけん</title>
+    <link rel="stylesheet" href="css/style.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Stick&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <h1>
+      <span class="title-part">ジョジョの</span>
+      <span class="title-part">奇妙な</span>
+      <span class="title-part">食べ物</span>
+      <span class="title-part">じゃんけん</span>
+    </h1>
+
+    <div class="game-container">
+      <div class="game-buttons">
+        <button id="pan" class="image-button">
+          <img src="image/select_pan.png" alt="パン" />
+          <span class="button-text">パン</span>
+        </button>
+        <button id="cherry" class="image-button">
+          <img src="image/select_cherry.png" alt="チェリー" />
+          <span class="button-text">チェリー</span>
+        </button>
+        <button id="sugar" class="image-button">
+          <img src="image/select_sugar.png" alt="角砂糖" />
+          <span class="button-text">角砂糖</span>
+        </button>
+      </div>
+
+      <div class="game-area">
+        <div class="player-area">
+          <h2>露伴(あなた)の選択</h2>
+          <div id="player-choice" class="choice-display">？</div>
+        </div>
+        <div class="computer-area">
+          <h2>じゃんけん小僧の選択</h2>
+          <div id="computer-choice" class="choice-display">？</div>
+        </div>
+      </div>
+
+      <div class="result-area">
+        <h2>結果</h2>
+        <div id="result-text">選択してください</div>
+        <div id="result-image-container">
+          <img
+            id="result-image"
+            class="result-image"
+            src=""
+            alt=""
+            style="display: none"
+          />
+        </div>
+        <!-- もう一度プレイするボタンを追加 -->
+        <button id="play-again" class="play-again-btn">
+          もう一度プレイする
+        </button>
+      </div>
+    </div>
+
+    <div class="footer-space"></div>
+
+    <!-- 自分が作成したjsのコードよりも必ず上！！！に貼り付ける -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script src="js/test.js"></script>
+  </body>
+</html>
