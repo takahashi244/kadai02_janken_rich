@@ -9,7 +9,7 @@
 デプロイしている場合はURLを記入（任意）
 
 ## ④アプリのログイン用IDまたはPassword（ある場合）
-- なし
+- [text](https://takahashi244.github.io/kadai02_janken_rich/)
 
 ## ⑤工夫した点・こだわった点
 - ジョジョの世界観をcssとjsで表現できるようにした
